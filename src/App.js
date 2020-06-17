@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Host from './pages/host'
+import Join from './pages/join'
+import Navbar from "react-bootstrap/Navbar";
+import Home from "./pages/home";
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+
+  render() {
+    return this.state.loading === true ? <h2>Loading...</h2> : (
+        <Router>
+          <Navbar bg="dark">
+            <Navbar.Brand style={{color: "white"}}>Buzz in app</Navbar.Brand>
+          </Navbar>
+          <Switch style={{margin: "25px"}}>
+            <Route exact path="/" component={Home}></Route>
+            <Route path="/host" component={Host}></Route>
+            <Route path="/join" component={Join}></Route>
+          </Switch>
+        </Router>
+    );
+  }
 }
+
 
 export default App;
