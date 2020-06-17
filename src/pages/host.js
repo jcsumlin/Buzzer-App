@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {db} from "../services/firebase"
 import Button from "react-bootstrap/Button";
-import {forEach} from "react-bootstrap/cjs/ElementChildren";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 
 
 class Host extends Component {
@@ -73,7 +71,6 @@ class Host extends Component {
             for (let [key, player] of Object.entries(snapshot.val())) {
                 player.buzzed = false;
                 player.time = 0;
-                console.log(player);
                 currentComponent.roomCodeRef.child('players').child(key).update(player)
             }
         }, function (snapshot) {
@@ -99,7 +96,7 @@ class Host extends Component {
                     {/*<p>Player Limit: 8</p>*/}
                     <br/>
                     <h4>Buzzed Players:</h4>
-                    <ul>
+                    <ol>
                         {this.state.players.map(player => {
                             if (player.buzzed) {
                                 return (<li>
@@ -108,7 +105,7 @@ class Host extends Component {
                             }
                             return null
                         })}
-                    </ul>
+                    </ol>
                     <h4>Not Buzzed Players:</h4>
                     {this.state.players.length === 0 ? <p>Waiting for players to join...</p> : null}
                     {this.state.readError ? <p>{this.state.readError}</p> : null}

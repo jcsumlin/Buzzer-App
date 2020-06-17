@@ -28,6 +28,11 @@ class Join extends Component {
                 return;
             }
         }
+        if (event.target.name === 'nick') {
+            if (event.target.value.match('^[a-zA-Z0-9 ]{1,32}$') === null) {
+                return
+            }
+        }
         this.setState({[event.target.name]: event.target.value});
     }
 
@@ -36,18 +41,19 @@ class Join extends Component {
         this.roomCodeRef = db.ref().child(this.state.roomPin);
         this.roomCodeRef.once('value', function (snapshot) {
             let obj = snapshot.val();
+            console.log(obj);
             if (obj === null) {
                 currentComponent.setState({roomPin: ""});
                 alert("Invalid room pin!");
                 return;
             }
             let settings = obj.settings;
-            currentComponent.setState({settings: settings})
+            let key = this.roomCodeRef.child('players').push({nick: this.state.nick, buzzed: false, time: 0}).key;
+            currentComponent.setState({userKey: key, settings: settings});
         }, function (errorObject) {
             alert("Invalid room pin!")
         });
-        let key = this.roomCodeRef.child('players').push({nick: this.state.nick, buzzed: false, time: 0}).key;
-        this.setState({userKey: key});
+
         event.preventDefault();
     }
 
@@ -66,11 +72,14 @@ class Join extends Component {
                                     </Form.Group>
                                     <Form.Group controlId="formBasicPassword">
                                         <Form.Label>Nickname</Form.Label>
+                                        <Form.Text className="text-muted">
+                                            Max 32 characters
+                                        </Form.Text>
                                         <Form.Control name="nick" type="text" onChange={this.handleChange}
                                                       value={this.state.nick}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit">
-                                        Submit
+                                        Join Room
                                     </Button>
                                 </Form>
                             </Col>
