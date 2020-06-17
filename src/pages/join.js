@@ -48,7 +48,7 @@ class Join extends Component {
                 return;
             }
             let settings = obj.settings;
-            let key = this.roomCodeRef.child('players').push({nick: this.state.nick, buzzed: false, time: 0}).key;
+            let key = currentComponent.roomCodeRef.child('players').push({nick: currentComponent.state.nick, buzzed: false, time: 0}).key;
             currentComponent.setState({userKey: key, settings: settings});
         }, function (errorObject) {
             alert("Invalid room pin!")
